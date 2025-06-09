@@ -3,8 +3,8 @@
 
 import { useEffect, useState } from 'react';
 import DailyTicketChart from '@/components/Analytics/DailyTicketChart';
-import { getDailyTicketSales } from '@/lib/analytics';
 import { useAuth } from '@/lib/context/AuthContext';
+import { getDailyTicketSales } from '@/lib/analytics';
 
 export default function AnalyticsPage() {
   const { user, loading } = useAuth();

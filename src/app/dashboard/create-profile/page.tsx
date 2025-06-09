@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axiosInstance from "@/lib/axiosInstance";
-import { uploadToCloudinary } from "@/lib/uploadToCloudinary";
 import { useState } from "react";
+import { uploadToCloudinary } from "@/lib/uploadToCloudinary";
 
 export default function CreateProfilePage() {
   const router = useRouter();
@@ -14,12 +14,12 @@ export default function CreateProfilePage() {
   const formik = useFormik({
     initialValues: {
   name: "",
-  profilePicture: "",  // changed from pictureUrl
+  profilePicture: "",  
   description: "",
 },
    validationSchema: Yup.object({
   name: Yup.string().required("Name is required"),
-  profilePicture: Yup.string().url("Invalid URL").required("Picture URL is required"),  // updated
+  profilePicture: Yup.string().url("Invalid URL").required("Picture URL is required"),  
   description: Yup.string().required("Description is required"),
 }),
     onSubmit: async (values, { setSubmitting, setErrors }) => {

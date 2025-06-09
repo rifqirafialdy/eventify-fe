@@ -1,6 +1,5 @@
 import CreateEventBanner from "@/components/Banner/CreateEventBanner";
 import CuratedBanner from "@/components/Banner/CurratedBanner";
-import LogoutButton from "@/components/Button/LogoutButton";
 import EventCard from "@/components/EventCard";
 interface BodyHomeProps {
   id?: string;

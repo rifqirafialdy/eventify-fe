@@ -1,67 +1,49 @@
 'use client';
 
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
-
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+  ChartContainer,
+  ChartConfig,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/ui/chart';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from 'recharts';
 
 type Props = {
-  data: { [date: string]: number };
+  data: Record<string, number>;
 };
 
 export default function DailyTicketChart({ data }: Props) {
-console.log(data);
+  const chartData = Object.entries(data)
+    .sort(([a], [b]) => new Date(a).getTime() - new Date(b).getTime())
+    .map(([date, value]) => ({ date, value }));
 
-  const dates = Object.keys(data).sort();
-  const values = dates.map((date) => data[date]);
-  
-  const chartData = {
-    labels: dates,
-    datasets: [
-      {
-        label: 'Tickets Sold',
-        data: values,
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        fill: true,
-        tension: 0.3,
-        pointRadius: 5,
-        pointHoverRadius: 7,
-      },
-    ],
-  };
+  const config = {
+    value: { label: 'Tickets Sold', color: 'var(--chart-1)' },
+  } satisfies ChartConfig;
 
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: 'Daily Ticket Sales',
-      },
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: {
-          stepSize: 1,
-        },
-      },
-    },
-  };
- return  <div className="bg-white p-4 shadow rounded-md h-[400px]">
-    <Line data={chartData} options={chartOptions} />
-  </div>;
- 
+  return (
+    <ChartContainer
+      config={config}
+      className="bg-white p-4 shadow rounded-md h-[400px]"
+    >
+      <LineChart data={chartData} accessibilityLayer>
+        <CartesianGrid vertical={false} />
+        <XAxis dataKey="date" />
+        <YAxis allowDecimals={false} />
+        <ChartTooltip content={<ChartTooltipContent />} />
+        <Line
+          dataKey="value"
+          stroke="var(--chart-1)"
+          strokeWidth={2}
+          fill="var(--chart-1)"
+        />
+      </LineChart>
+    </ChartContainer>
+  );
 }
