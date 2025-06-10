@@ -6,8 +6,8 @@ import axiosInstance from '@/lib/axiosInstance';
 import { MapPin, CalendarIcon, ClockIcon } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import dayjs from 'dayjs';
-import PermissionButton from '@/components/PermissionButton';
-
+import BuyTicketForm from '@/components/BuyTicketForm';
+import PermissionWrapper from '@/components/PermissionWrapper';
 type Ticket = {
   ticketId: string;
   categoryName: string;
@@ -15,6 +15,7 @@ type Ticket = {
 };
 
 type Schedule = {
+  scheduleId: string; 
   cityCode: string;
   startDate: string;
   address1: string;
@@ -52,7 +53,12 @@ export default function EventDetailPage() {
   if (loading) return <div className="p-6">Loading...</div>;
   if (!event) return <div className="p-6">Event not found.</div>;
 
-  const schedule = event.schedules[0];
+  const schedule = event.schedules?.[0];
+
+  if (!schedule) {
+    return <div className="p-6 text-red-600">No schedule available for this event.</div>;
+  }
+
   const dateFormatted = dayjs(schedule.startDate).format('dddd, D MMMM YYYY');
   const timeFormatted = dayjs(schedule.startDate).format('h:mm A');
 
@@ -66,9 +72,7 @@ export default function EventDetailPage() {
           alt="Event Banner"
           className="w-full h-64 object-cover rounded"
         />
-        <h1 className="text-3xl font-bold text-gray-900 mt-6">
-          {event.name}
-        </h1>
+        <h1 className="text-3xl font-bold text-gray-900 mt-6">{event.name}</h1>
 
         <div className="mt-4 text-gray-700">
           <div className="flex items-center gap-2 mb-1">
@@ -88,7 +92,7 @@ export default function EventDetailPage() {
         <div className="mt-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-2">Ticket Information</h3>
           <ul className="space-y-2">
-            {schedule.tickets.map((ticket) => (
+            {schedule.tickets?.map((ticket) => (
               <li
                 key={ticket.ticketId}
                 className="flex justify-between border p-3 rounded"
@@ -100,14 +104,12 @@ export default function EventDetailPage() {
           </ul>
         </div>
 
-        <div className="mt-6">
-<PermissionButton
-        screen="TICKETS"
-        action="BUY"
-        className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-6 py-3 rounded-lg"
-        onClick={() => alert("Buying ticket...")}
-      >            Buy Tickets
-          </PermissionButton>
+
+        <div className="mt-8" id="buy-ticket-form">
+          <PermissionWrapper screen="TICKETS" action="BUY">
+          <BuyTicketForm schedule={schedule} />
+
+          </PermissionWrapper>
         </div>
       </div>
     </>
