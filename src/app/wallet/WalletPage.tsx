@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 type ReferralPoint = {
   amount: number;
   expiresAt: string;
+  bookTypeCode :string;
 };
 
 type WalletData = {
@@ -62,6 +63,7 @@ export default function WalletPage() {
             {wallet.points.map((point, index) => (
               <li key={index} className="flex justify-between border-b pb-1">
                 <span>{point.amount.toLocaleString()} points</span>
+                <span>{point.bookTypeCode.toLocaleString()}</span>
                 <span className="text-sm text-gray-500">Expires on {dayjs(point.expiresAt).format('DD MMM YYYY, HH:mm')}</span>
               </li>
             ))}
