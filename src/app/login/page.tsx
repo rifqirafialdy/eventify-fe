@@ -22,20 +22,32 @@ export default function LoginPage() {
       password: Yup.string().required("Required"),
     }),
     onSubmit: async (values) => {
-      try {
-        await axios.post(
-          "https://minpro-931372793184.asia-southeast2.run.app/api/auth/login",
-          values,
-          { withCredentials: true }
-        );
+  try {
+    await axios.post(
+      "https://minpro-931372793184.asia-southeast2.run.app/api/auth/login",
+      values,
+      { withCredentials: true }
+    );
 
-        alert("Login successful!");
-        router.push("/");
-      } catch (err) {
-        const typedError = err as { response?: { data?: string } };
-        setError(typedError.response?.data || "Login failed");
+    alert("Login successful!");
+    router.push("/");
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const backendMessage = error.response.data?.message;
+
+      if (backendMessage === "Bad credentials") {
+        setError("Email or password is incorrect");
+      } else if (typeof backendMessage === "string") {
+        setError(backendMessage);
+      } else {
+        setError("Login failed");
       }
-    },
+    } else {
+      setError("An unexpected error occurred");
+    }
+  }
+}
+
   });
 
   return (
