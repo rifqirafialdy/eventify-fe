@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import axiosInstance from '@/lib/axiosInstance';
-import { Button } from '@/components/ui/button';
 import { MapPin, CalendarIcon, ClockIcon } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import dayjs from 'dayjs';
