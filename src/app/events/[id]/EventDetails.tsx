@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { MapPin, CalendarIcon, ClockIcon } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import dayjs from 'dayjs';
+import PermissionButton from '@/components/PermissionButton';
 
 type Ticket = {
   ticketId: string;
@@ -101,9 +102,13 @@ export default function EventDetailPage() {
         </div>
 
         <div className="mt-6">
-          <Button className="bg-amber-500 hover:bg-amber-600 text-white">
-            Buy Tickets
-          </Button>
+<PermissionButton
+        screen="TICKETS"
+        action="BUY"
+        className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-6 py-3 rounded-lg"
+        onClick={() => alert("Buying ticket...")}
+      >            Buy Tickets
+          </PermissionButton>
         </div>
       </div>
     </>
